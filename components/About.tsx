@@ -5,10 +5,10 @@ import { useRef, useEffect, useState } from "react";
 import { Award, Users, Rocket, TrendingUp } from "lucide-react";
 
 const stats = [
-  { icon: Award, value: 100, suffix: "+", label: "Brands Launched" },
-  { icon: Users, value: 50, suffix: "+", label: "Happy Clients" },
-  { icon: Rocket, value: 5, suffix: "+", label: "Years Experience" },
-  { icon: TrendingUp, value: 95, suffix: "%", label: "Client Satisfaction" },
+  { icon: Award, value: 150, suffix: "+", label: "Brands Launched" },
+  { icon: Users, value: 200, suffix: "+", label: "Happy Clients" },
+  { icon: Rocket, value: 10, suffix: "+", label: "Years Experience" },
+  { icon: TrendingUp, value: 98, suffix: "%", label: "Client Satisfaction" },
 ];
 
 function CountUp({ end, suffix = "", duration = 2, isActive = false }: { 
@@ -24,34 +24,25 @@ function CountUp({ end, suffix = "", duration = 2, isActive = false }: {
   useEffect(() => {
     if (isActive && !hasAnimated.current) {
       hasAnimated.current = true;
+      const startTime = Date.now();
       const increment = end / (duration * 60);
+      
       const timer = setInterval(() => {
-        countRef.current += increment;
-        if (countRef.current >= end) {
+        const elapsed = (Date.now() - startTime) / 1000;
+        if (elapsed >= duration) {
           setCount(end);
           clearInterval(timer);
         } else {
-          setCount(Math.floor(countRef.current));
+          countRef.current += increment;
+          setCount(Math.min(Math.floor(countRef.current), end));
         }
       }, 1000 / 60);
 
       return () => clearInterval(timer);
-    } else if (!isActive) {
-      // Show final value immediately if not active (fallback)
-      setCount(end);
+    } else if (!isActive && !hasAnimated.current) {
+      setCount(0);
     }
   }, [end, duration, isActive]);
-
-  // Fallback: show final value if animation hasn't started after a delay
-  useEffect(() => {
-    const fallbackTimer = setTimeout(() => {
-      if (count === 0 && end > 0) {
-        setCount(end);
-      }
-    }, 100);
-
-    return () => clearTimeout(fallbackTimer);
-  }, [count, end]);
 
   return (
     <span>
@@ -63,7 +54,7 @@ function CountUp({ end, suffix = "", duration = 2, isActive = false }: {
 
 export default function About() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-50px" });
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
     <section
@@ -76,7 +67,7 @@ export default function About() {
           <motion.div
             className="text-center lg:text-left"
             initial={{ opacity: 0, x: -50 }}
-            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 1, x: 0 }}
+            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
             transition={{ duration: 0.6 }}
           >
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 text-center lg:text-left">
@@ -100,12 +91,12 @@ export default function About() {
           <motion.div
             className="relative flex justify-center lg:justify-end"
             initial={{ opacity: 0, x: 50 }}
-            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 1, x: 0 }}
+            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
             <motion.div
               className="aspect-square w-full max-w-md bg-gradient-to-br from-gray-100 via-gray-50 to-gray-200 rounded-2xl flex items-center justify-center shadow-xl relative overflow-hidden"
-              whileHover={{ scale: 1.02 }}
+              whileHover={{ scale: 1.02, rotate: 1 }}
               transition={{ type: "spring", stiffness: 300 }}
             >
               <motion.div
@@ -136,7 +127,7 @@ export default function About() {
         <motion.div
           className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 w-full"
           initial={{ opacity: 0, y: 50 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 1, y: 0 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
           transition={{ duration: 0.6, delay: 0.4 }}
         >
           {stats.map((stat, index) => {
@@ -146,8 +137,9 @@ export default function About() {
                 key={stat.label}
                 className="text-center"
                 initial={{ opacity: 0, scale: 0.5 }}
-                animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 1, scale: 1 }}
+                animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.5 }}
                 transition={{ delay: 0.5 + index * 0.1, type: "spring", stiffness: 200 }}
+                whileHover={{ y: -5, scale: 1.05 }}
               >
                 <motion.div
                   className="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-gray-900 to-gray-700 rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg"

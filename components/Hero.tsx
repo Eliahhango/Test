@@ -6,6 +6,7 @@ import { useEffect, useRef } from "react";
 
 export default function Hero() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const animationFrameRef = useRef<number>();
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -15,8 +16,12 @@ export default function Hero() {
     if (!ctx) return;
 
     const resizeCanvas = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = window.innerWidth * dpr;
+      canvas.height = window.innerHeight * dpr;
+      ctx.scale(dpr, dpr);
+      canvas.style.width = window.innerWidth + "px";
+      canvas.style.height = window.innerHeight + "px";
     };
     resizeCanvas();
 
@@ -29,12 +34,12 @@ export default function Hero() {
       opacity: number;
     }> = [];
 
-    for (let i = 0; i < 80; i++) {
+    for (let i = 0; i < 100; i++) {
       particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.8,
-        vy: (Math.random() - 0.5) * 0.8,
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        vx: (Math.random() - 0.5) * 1.2,
+        vy: (Math.random() - 0.5) * 1.2,
         radius: Math.random() * 3 + 1,
         opacity: Math.random() * 0.5 + 0.2,
       });
@@ -47,22 +52,58 @@ export default function Hero() {
         particle.x += particle.vx;
         particle.y += particle.vy;
 
-        if (particle.x < 0 || particle.x > canvas.width) particle.vx *= -1;
-        if (particle.y < 0 || particle.y > canvas.height) particle.vy *= -1;
+        if (particle.x < 0 || particle.x > window.innerWidth) particle.vx *= -1;
+        if (particle.y < 0 || particle.y > window.innerHeight) particle.vy *= -1;
 
         ctx.beginPath();
         ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(10, 10, 10, ${particle.opacity})`;
         ctx.fill();
+
+        // Connect nearby particles
+        particles.forEach((otherParticle) => {
+          const dx = particle.x - otherParticle.x;
+          const dy = particle.y - otherParticle.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+
+          if (distance < 120) {
+            ctx.beginPath();
+            ctx.moveTo(particle.x, particle.y);
+            ctx.lineTo(otherParticle.x, otherParticle.y);
+            ctx.strokeStyle = `rgba(10, 10, 10, ${0.1 * (1 - distance / 120)})`;
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+          }
+        });
       });
 
-      requestAnimationFrame(animate);
+      animationFrameRef.current = requestAnimationFrame(animate);
     };
 
     animate();
     window.addEventListener("resize", resizeCanvas);
-    return () => window.removeEventListener("resize", resizeCanvas);
+    return () => {
+      window.removeEventListener("resize", resizeCanvas);
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+    };
   }, []);
+
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    const element = document.querySelector(href);
+    if (element) {
+      const headerOffset = 80;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth",
+      });
+    }
+  };
 
   const containerVariants = {
     hidden: { opacity: 1 },
@@ -116,6 +157,7 @@ export default function Hero() {
             className="inline-flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full border border-gray-200 shadow-sm"
             initial={{ scale: 1 }}
             animate={{ scale: 1 }}
+            whileHover={{ scale: 1.05 }}
             transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
           >
             <Sparkles className="text-gray-900" size={16} />
@@ -186,6 +228,7 @@ export default function Hero() {
         >
           <motion.a
             href="#contact"
+            onClick={(e) => handleNavClick(e, "#contact")}
             className="group w-full sm:w-auto px-8 py-4 bg-gray-900 text-white rounded-full font-semibold text-base sm:text-lg flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-shadow"
             whileHover={{ scale: 1.05, backgroundColor: "#1a1a1a" }}
             whileTap={{ scale: 0.95 }}
@@ -198,6 +241,7 @@ export default function Hero() {
           </motion.a>
           <motion.a
             href="#work"
+            onClick={(e) => handleNavClick(e, "#work")}
             className="w-full sm:w-auto px-8 py-4 border-2 border-gray-900 text-gray-900 rounded-full font-semibold text-base sm:text-lg hover:bg-gray-50 transition-colors"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}

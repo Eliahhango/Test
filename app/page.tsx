@@ -6,10 +6,12 @@ import About from "@/components/About";
 import Testimonials from "@/components/Testimonials";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
+import ScrollProgress from "@/components/ScrollProgress";
 
 export default function Home() {
   return (
     <main className="relative">
+      <ScrollProgress />
       <Header />
       <Hero />
       <Services />
