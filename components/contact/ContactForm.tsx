@@ -1,0 +1,224 @@
+"use client";
+
+import { motion } from "framer-motion";
+import { useState } from "react";
+import { Send, XCircle } from "lucide-react";
+
+export default function ContactForm({ onSuccess }: { onSuccess: () => void }) {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+
+  const [focused, setFocused] = useState<string | null>(null);
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const validateEmail = (email: string) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setErrors({});
+
+    const newErrors: { [key: string]: string } = {};
+
+    if (!formData.name.trim()) {
+      newErrors.name = "Name is required";
+    }
+
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!validateEmail(formData.email)) {
+      newErrors.email = "Please enter a valid email address";
+    }
+
+    if (!formData.message.trim()) {
+      newErrors.message = "Message is required";
+    } else if (formData.message.trim().length < 10) {
+      newErrors.message = "Message must be at least 10 characters";
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      setIsSubmitting(false);
+      return;
+    }
+
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    onSuccess();
+    setFormData({ name: "", email: "", message: "" });
+    setFocused(null);
+    setIsSubmitting(false);
+  };
+
+  return (
+    <motion.form
+      onSubmit={handleSubmit}
+      className="space-y-6 w-full max-w-2xl mx-auto"
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6, delay: 0.2 }}
+    >
+      <div className="relative">
+        <input
+          type="text"
+          id="name"
+          name="name"
+          value={formData.name}
+          onChange={(e) => {
+            setFormData({ ...formData, name: e.target.value });
+            if (errors.name) setErrors({ ...errors, name: "" });
+          }}
+          onFocus={() => setFocused("name")}
+          onBlur={() => setFocused(null)}
+          className={`w-full px-4 py-4 bg-transparent border-0 border-b-2 ${
+            errors.name ? "border-red-500" : "border-gray-300 focus:border-gray-900"
+          } outline-none transition-colors text-gray-900`}
+          placeholder="Enter your name"
+          required
+          aria-label="Name"
+          aria-required="true"
+          aria-invalid={!!errors.name}
+        />
+        <label
+          htmlFor="name"
+          className={`absolute left-4 transition-all duration-300 pointer-events-none ${
+            focused === "name" || formData.name
+              ? "top-0 text-sm text-gray-900"
+              : "top-4 text-base text-gray-500"
+          }`}
+        >
+          Name
+        </label>
+        {errors.name && (
+          <motion.p
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-red-500 text-sm mt-2 flex items-center gap-1"
+          >
+            <XCircle size={14} />
+            {errors.name}
+          </motion.p>
+        )}
+      </div>
+
+      <div className="relative">
+        <input
+          type="email"
+          id="email"
+          name="email"
+          value={formData.email}
+          onChange={(e) => {
+            setFormData({ ...formData, email: e.target.value });
+            if (errors.email) setErrors({ ...errors, email: "" });
+          }}
+          onFocus={() => setFocused("email")}
+          onBlur={() => setFocused(null)}
+          className={`w-full px-4 py-4 bg-transparent border-0 border-b-2 ${
+            errors.email ? "border-red-500" : "border-gray-300 focus:border-gray-900"
+          } outline-none transition-colors text-gray-900`}
+          placeholder="Enter your email"
+          required
+          aria-label="Email"
+          aria-required="true"
+          aria-invalid={!!errors.email}
+        />
+        <label
+          htmlFor="email"
+          className={`absolute left-4 transition-all duration-300 pointer-events-none ${
+            focused === "email" || formData.email
+              ? "top-0 text-sm text-gray-900"
+              : "top-4 text-base text-gray-500"
+          }`}
+        >
+          Email
+        </label>
+        {errors.email && (
+          <motion.p
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-red-500 text-sm mt-2 flex items-center gap-1"
+          >
+            <XCircle size={14} />
+            {errors.email}
+          </motion.p>
+        )}
+      </div>
+
+      <div className="relative">
+        <textarea
+          id="message"
+          name="message"
+          value={formData.message}
+          onChange={(e) => {
+            setFormData({ ...formData, message: e.target.value });
+            if (errors.message) setErrors({ ...errors, message: "" });
+          }}
+          onFocus={() => setFocused("message")}
+          onBlur={() => setFocused(null)}
+          rows={6}
+          className={`w-full px-4 py-4 bg-transparent border-0 border-b-2 ${
+            errors.message ? "border-red-500" : "border-gray-300 focus:border-gray-900"
+          } outline-none transition-colors resize-none text-gray-900`}
+          placeholder="Enter your message"
+          required
+          aria-label="Message"
+          aria-required="true"
+          aria-invalid={!!errors.message}
+        />
+        <label
+          htmlFor="message"
+          className={`absolute left-4 transition-all duration-300 pointer-events-none ${
+            focused === "message" || formData.message
+              ? "top-0 text-sm text-gray-900"
+              : "top-4 text-base text-gray-500"
+          }`}
+        >
+          Message
+        </label>
+        {errors.message && (
+          <motion.p
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-red-500 text-sm mt-2 flex items-center gap-1"
+          >
+            <XCircle size={14} />
+            {errors.message}
+          </motion.p>
+        )}
+      </div>
+
+      <motion.button
+        type="submit"
+        disabled={isSubmitting}
+        className="w-full px-8 py-4 bg-gray-900 text-white rounded-full font-semibold text-base sm:text-lg flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-shadow disabled:opacity-50 disabled:cursor-not-allowed mt-8"
+        whileHover={!isSubmitting ? { scale: 1.02, backgroundColor: "#1a1a1a" } : {}}
+        whileTap={!isSubmitting ? { scale: 0.98 } : {}}
+      >
+        {isSubmitting ? (
+          <>
+            <motion.div
+              className="w-5 h-5 border-2 border-white border-t-transparent rounded-full"
+              animate={{ rotate: 360 }}
+              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+            />
+            Sending...
+          </>
+        ) : (
+          <>
+            Send Message
+            <Send size={20} />
+          </>
+        )}
+      </motion.button>
+    </motion.form>
+  );
+}
+

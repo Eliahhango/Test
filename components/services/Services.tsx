@@ -64,14 +64,14 @@ export default function Services() {
       ref={ref}
       className="py-20 sm:py-24 lg:py-32 bg-white w-full"
     >
-      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="content">
         <motion.div
           className="text-center mb-12 sm:mb-16"
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4 text-center">
+          <h2 className="section-title text-center mb-4">
             Our Services
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl mx-auto text-center">
@@ -116,3 +116,4 @@ export default function Services() {
     </section>
   );
 }
+

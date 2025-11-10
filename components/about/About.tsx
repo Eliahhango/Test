@@ -1,8 +1,9 @@
 "use client";
 
 import { motion, useInView } from "framer-motion";
-import { useRef, useEffect, useState } from "react";
+import { useRef } from "react";
 import { Award, Users, Rocket, TrendingUp } from "lucide-react";
+import StatsGrid from "./StatsGrid";
 
 const stats = [
   { icon: Award, value: 150, suffix: "+", label: "Brands Launched" },
@@ -10,47 +11,6 @@ const stats = [
   { icon: Rocket, value: 10, suffix: "+", label: "Years Experience" },
   { icon: TrendingUp, value: 98, suffix: "%", label: "Client Satisfaction" },
 ];
-
-function CountUp({ end, suffix = "", duration = 2, isActive = false }: { 
-  end: number; 
-  suffix?: string; 
-  duration?: number;
-  isActive?: boolean;
-}) {
-  const [count, setCount] = useState(0);
-  const countRef = useRef(0);
-  const hasAnimated = useRef(false);
-
-  useEffect(() => {
-    if (isActive && !hasAnimated.current) {
-      hasAnimated.current = true;
-      const startTime = Date.now();
-      const increment = end / (duration * 60);
-      
-      const timer = setInterval(() => {
-        const elapsed = (Date.now() - startTime) / 1000;
-        if (elapsed >= duration) {
-          setCount(end);
-          clearInterval(timer);
-        } else {
-          countRef.current += increment;
-          setCount(Math.min(Math.floor(countRef.current), end));
-        }
-      }, 1000 / 60);
-
-      return () => clearInterval(timer);
-    } else if (!isActive && !hasAnimated.current) {
-      setCount(0);
-    }
-  }, [end, duration, isActive]);
-
-  return (
-    <span>
-      {Math.floor(count)}
-      {suffix}
-    </span>
-  );
-}
 
 export default function About() {
   const ref = useRef(null);
@@ -62,7 +22,7 @@ export default function About() {
       ref={ref}
       className="py-20 sm:py-24 lg:py-32 bg-white w-full"
     >
-      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="content">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center mb-16 lg:mb-20">
           <motion.div
             className="text-center lg:text-left"
@@ -70,7 +30,7 @@ export default function About() {
             animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 text-center lg:text-left">
+            <h2 className="section-title text-center lg:text-left mb-6">
               Our Philosophy
             </h2>
             <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-6 leading-relaxed text-center lg:text-left">
@@ -124,39 +84,9 @@ export default function About() {
           </motion.div>
         </div>
 
-        <motion.div
-          className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 w-full"
-          initial={{ opacity: 0, y: 50 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-        >
-          {stats.map((stat, index) => {
-            const Icon = stat.icon;
-            return (
-              <motion.div
-                key={stat.label}
-                className="text-center"
-                initial={{ opacity: 0, scale: 0.5 }}
-                animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.5 }}
-                transition={{ delay: 0.5 + index * 0.1, type: "spring", stiffness: 200 }}
-                whileHover={{ y: -5, scale: 1.05 }}
-              >
-                <motion.div
-                  className="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-gray-900 to-gray-700 rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg"
-                  whileHover={{ rotate: 360, scale: 1.1 }}
-                  transition={{ duration: 0.6 }}
-                >
-                  <Icon className="text-white" size={28} />
-                </motion.div>
-                <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-2">
-                  <CountUp end={stat.value} suffix={stat.suffix} isActive={isInView} />
-                </div>
-                <p className="text-sm sm:text-base text-gray-600 font-medium">{stat.label}</p>
-              </motion.div>
-            );
-          })}
-        </motion.div>
+        <StatsGrid stats={stats} isInView={isInView} />
       </div>
     </section>
   );
 }
+

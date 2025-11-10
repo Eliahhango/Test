@@ -144,7 +144,7 @@ export default function Hero() {
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.1),transparent_50%)]" />
 
       <motion.div
-        className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center"
+        className="relative z-10 content text-center"
         variants={containerVariants}
         initial="visible"
         animate="visible"
@@ -267,3 +267,4 @@ export default function Hero() {
     </section>
   );
 }
+

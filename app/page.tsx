@@ -1,25 +1,22 @@
-import Header from "@/components/Header";
-import Hero from "@/components/Hero";
-import Services from "@/components/Services";
-import FeaturedWork from "@/components/FeaturedWork";
-import About from "@/components/About";
-import Testimonials from "@/components/Testimonials";
-import Contact from "@/components/Contact";
-import Footer from "@/components/Footer";
-import ScrollProgress from "@/components/ScrollProgress";
+import Main from "@/layouts/Main";
+import Hero from "@/components/hero/Hero";
+import Services from "@/components/services/Services";
+import Portfolio from "@/components/portfolio/Portfolio";
+import About from "@/components/about/About";
+import Testimonials from "@/components/testimonials/Testimonials";
+import Contact from "@/components/contact/Contact";
 
 export default function Home() {
   return (
-    <main className="relative">
-      <ScrollProgress />
-      <Header />
-      <Hero />
-      <Services />
-      <FeaturedWork />
-      <About />
-      <Testimonials />
-      <Contact />
-      <Footer />
-    </main>
+    <Main>
+      <div className="relative">
+        <Hero />
+        <Services />
+        <Portfolio />
+        <About />
+        <Testimonials />
+        <Contact />
+      </div>
+    </Main>
   );
 }
