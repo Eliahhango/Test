@@ -65,28 +65,6 @@ body {
   display: none;
 }
 
-/* Custom cursor styles */
-.cursor-dot {
-  width: 8px;
-  height: 8px;
-  background-color: #0a0a0a;
-  border-radius: 50%;
-  position: fixed;
-  pointer-events: none;
-  z-index: 9999;
-  transition: transform 0.1s ease;
-}
-
-.cursor-outline {
-  width: 40px;
-  height: 40px;
-  border: 2px solid #0a0a0a;
-  border-radius: 50%;
-  position: fixed;
-  pointer-events: none;
-  z-index: 9998;
-  transition: all 0.15s ease;
-}
 
 /* Responsive text alignment */
 @media (max-width: 640px) {
