@@ -64,10 +64,10 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="py-16 sm:py-20 lg:py-24 bg-white w-full relative">
+    <section id="contact" className="py-20 sm:py-24 lg:py-32 bg-white w-full relative">
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
-          className="text-center mb-12 sm:mb-16"
+          className="text-center mb-16 sm:mb-20"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -98,73 +98,75 @@ export default function Contact() {
           )}
         </AnimatePresence>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
+        <div className="max-w-4xl mx-auto space-y-16">
+          {/* Contact Information Section */}
           <motion.div
-            className="text-center lg:text-left"
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            className="text-center"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 text-center lg:text-left">
+            <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6">
               Contact Information
             </h3>
-            <p className="text-base sm:text-lg text-gray-600 mb-8 leading-relaxed text-center lg:text-left">
+            <p className="text-base sm:text-lg text-gray-600 mb-12 leading-relaxed max-w-2xl mx-auto">
               We'd love to hear about your project and explore how we can help
               bring your brand vision to life.
             </p>
 
-            <div className="space-y-6">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
               <motion.a
                 href="mailto:hello@brandstudio.com"
-                className="flex flex-col sm:flex-row items-center sm:items-start gap-4 text-gray-700 hover:text-gray-900 group text-center sm:text-left"
-                whileHover={{ x: 5, scale: 1.02 }}
+                className="flex flex-col items-center gap-4 text-gray-700 hover:text-gray-900 group"
+                whileHover={{ y: -5, scale: 1.05 }}
               >
-                <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center group-hover:bg-gray-900 transition-colors flex-shrink-0">
-                  <Mail className="text-gray-900 group-hover:text-white transition-colors" size={20} />
+                <div className="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center group-hover:bg-gray-900 transition-colors">
+                  <Mail className="text-gray-900 group-hover:text-white transition-colors" size={24} />
                 </div>
-                <div>
-                  <p className="font-semibold text-base sm:text-lg">Email</p>
+                <div className="text-center">
+                  <p className="font-semibold text-base sm:text-lg mb-1">Email</p>
                   <p className="text-sm sm:text-base text-gray-600">hello@brandstudio.com</p>
                 </div>
               </motion.a>
 
               <motion.a
                 href="tel:+1234567890"
-                className="flex flex-col sm:flex-row items-center sm:items-start gap-4 text-gray-700 hover:text-gray-900 group text-center sm:text-left"
-                whileHover={{ x: 5, scale: 1.02 }}
+                className="flex flex-col items-center gap-4 text-gray-700 hover:text-gray-900 group"
+                whileHover={{ y: -5, scale: 1.05 }}
               >
-                <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center group-hover:bg-gray-900 transition-colors flex-shrink-0">
-                  <Phone className="text-gray-900 group-hover:text-white transition-colors" size={20} />
+                <div className="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center group-hover:bg-gray-900 transition-colors">
+                  <Phone className="text-gray-900 group-hover:text-white transition-colors" size={24} />
                 </div>
-                <div>
-                  <p className="font-semibold text-base sm:text-lg">Phone</p>
+                <div className="text-center">
+                  <p className="font-semibold text-base sm:text-lg mb-1">Phone</p>
                   <p className="text-sm sm:text-base text-gray-600">+1 (234) 567-890</p>
                 </div>
               </motion.a>
 
               <motion.div
-                className="flex flex-col sm:flex-row items-center sm:items-start gap-4 text-gray-700 text-center sm:text-left"
-                whileHover={{ x: 5, scale: 1.02 }}
+                className="flex flex-col items-center gap-4 text-gray-700"
+                whileHover={{ y: -5, scale: 1.05 }}
               >
-                <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <MapPin className="text-gray-900" size={20} />
+                <div className="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center">
+                  <MapPin className="text-gray-900" size={24} />
                 </div>
-                <div>
-                  <p className="font-semibold text-base sm:text-lg">Location</p>
+                <div className="text-center">
+                  <p className="font-semibold text-base sm:text-lg mb-1">Location</p>
                   <p className="text-sm sm:text-base text-gray-600">New York, NY</p>
                 </div>
               </motion.div>
             </div>
           </motion.div>
 
+          {/* Contact Form Section */}
           <motion.form
             onSubmit={handleSubmit}
-            className="space-y-6 w-full"
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            className="space-y-6 w-full max-w-2xl mx-auto"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
           >
             <div className="relative">
               <input
@@ -178,9 +180,9 @@ export default function Contact() {
                 }}
                 onFocus={() => setFocused("name")}
                 onBlur={() => setFocused(null)}
-                className={`w-full px-4 py-3 bg-transparent border-0 border-b-2 ${
+                className={`w-full px-4 py-4 bg-transparent border-0 border-b-2 ${
                   errors.name ? "border-red-500" : "border-gray-300 focus:border-gray-900"
-                } outline-none transition-colors text-gray-900 text-center sm:text-left`}
+                } outline-none transition-colors text-gray-900`}
                 placeholder="Enter your name"
                 required
                 aria-label="Name"
@@ -192,8 +194,8 @@ export default function Contact() {
                 className={`absolute left-4 transition-all duration-300 pointer-events-none ${
                   focused === "name" || formData.name
                     ? "top-0 text-sm text-gray-900"
-                    : "top-3 text-base text-gray-500"
-                } text-center sm:text-left`}
+                    : "top-4 text-base text-gray-500"
+                }`}
               >
                 Name
               </label>
@@ -201,7 +203,7 @@ export default function Contact() {
                 <motion.p
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="text-red-500 text-sm mt-1 flex items-center gap-1"
+                  className="text-red-500 text-sm mt-2 flex items-center gap-1"
                 >
                   <XCircle size={14} />
                   {errors.name}
@@ -221,9 +223,9 @@ export default function Contact() {
                 }}
                 onFocus={() => setFocused("email")}
                 onBlur={() => setFocused(null)}
-                className={`w-full px-4 py-3 bg-transparent border-0 border-b-2 ${
+                className={`w-full px-4 py-4 bg-transparent border-0 border-b-2 ${
                   errors.email ? "border-red-500" : "border-gray-300 focus:border-gray-900"
-                } outline-none transition-colors text-gray-900 text-center sm:text-left`}
+                } outline-none transition-colors text-gray-900`}
                 placeholder="Enter your email"
                 required
                 aria-label="Email"
@@ -235,8 +237,8 @@ export default function Contact() {
                 className={`absolute left-4 transition-all duration-300 pointer-events-none ${
                   focused === "email" || formData.email
                     ? "top-0 text-sm text-gray-900"
-                    : "top-3 text-base text-gray-500"
-                } text-center sm:text-left`}
+                    : "top-4 text-base text-gray-500"
+                }`}
               >
                 Email
               </label>
@@ -244,7 +246,7 @@ export default function Contact() {
                 <motion.p
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="text-red-500 text-sm mt-1 flex items-center gap-1"
+                  className="text-red-500 text-sm mt-2 flex items-center gap-1"
                 >
                   <XCircle size={14} />
                   {errors.email}
@@ -264,9 +266,9 @@ export default function Contact() {
                 onFocus={() => setFocused("message")}
                 onBlur={() => setFocused(null)}
                 rows={6}
-                className={`w-full px-4 py-3 bg-transparent border-0 border-b-2 ${
+                className={`w-full px-4 py-4 bg-transparent border-0 border-b-2 ${
                   errors.message ? "border-red-500" : "border-gray-300 focus:border-gray-900"
-                } outline-none transition-colors resize-none text-gray-900 text-center sm:text-left`}
+                } outline-none transition-colors resize-none text-gray-900`}
                 placeholder="Enter your message"
                 required
                 aria-label="Message"
@@ -278,8 +280,8 @@ export default function Contact() {
                 className={`absolute left-4 transition-all duration-300 pointer-events-none ${
                   focused === "message" || formData.message
                     ? "top-0 text-sm text-gray-900"
-                    : "top-3 text-base text-gray-500"
-                } text-center sm:text-left`}
+                    : "top-4 text-base text-gray-500"
+                }`}
               >
                 Message
               </label>
@@ -287,7 +289,7 @@ export default function Contact() {
                 <motion.p
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="text-red-500 text-sm mt-1 flex items-center gap-1"
+                  className="text-red-500 text-sm mt-2 flex items-center gap-1"
                 >
                   <XCircle size={14} />
                   {errors.message}
@@ -298,7 +300,7 @@ export default function Contact() {
             <motion.button
               type="submit"
               disabled={isSubmitting}
-              className="w-full px-8 py-4 bg-gray-900 text-white rounded-full font-semibold text-base sm:text-lg flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-shadow disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full px-8 py-4 bg-gray-900 text-white rounded-full font-semibold text-base sm:text-lg flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-shadow disabled:opacity-50 disabled:cursor-not-allowed mt-8"
               whileHover={!isSubmitting ? { scale: 1.02, backgroundColor: "#1a1a1a" } : {}}
               whileTap={!isSubmitting ? { scale: 0.98 } : {}}
             >

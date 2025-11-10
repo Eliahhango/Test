@@ -55,7 +55,7 @@ export default function Testimonials() {
   };
 
   return (
-    <section className="py-16 sm:py-20 lg:py-24 bg-gradient-to-br from-gray-50 to-white w-full">
+    <section className="py-20 sm:py-24 lg:py-32 bg-gradient-to-br from-gray-50 to-white w-full">
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           className="text-center mb-12 sm:mb-16"

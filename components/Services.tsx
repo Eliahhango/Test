@@ -62,7 +62,7 @@ export default function Services() {
     <section
       id="services"
       ref={ref}
-      className="py-16 sm:py-20 lg:py-24 bg-white w-full"
+      className="py-20 sm:py-24 lg:py-32 bg-white w-full"
     >
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div

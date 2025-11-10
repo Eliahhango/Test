@@ -3,7 +3,6 @@
 import { motion } from "framer-motion";
 import { useRef } from "react";
 import { ExternalLink, ArrowRight } from "lucide-react";
-import Image from "next/image";
 
 const projects = [
   {
@@ -160,7 +159,7 @@ export default function FeaturedWork() {
     <section
       id="work"
       ref={containerRef}
-      className="py-16 sm:py-20 lg:py-24 bg-gradient-to-br from-gray-50 to-white w-full overflow-hidden"
+      className="py-20 sm:py-24 lg:py-32 bg-gradient-to-br from-gray-50 to-white w-full overflow-hidden"
     >
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
