@@ -19,6 +19,7 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body {
@@ -26,6 +27,14 @@ body {
   color: var(--foreground);
   font-family: var(--font-inter), system-ui, sans-serif;
   overflow-x: hidden;
+  width: 100%;
+}
+
+/* Ensure all containers are centered */
+.container {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* Custom scrollbar */
@@ -44,6 +53,16 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
+}
+
+/* Hide scrollbar for horizontal scroll */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }
 
 /* Custom cursor styles */
@@ -67,4 +86,22 @@ body {
   pointer-events: none;
   z-index: 9998;
   transition: all 0.15s ease;
+}
+
+/* Responsive text alignment */
+@media (max-width: 640px) {
+  .text-responsive {
+    text-align: center;
+  }
+}
+
+/* Smooth animations */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

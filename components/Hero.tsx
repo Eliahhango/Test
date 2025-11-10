@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Sparkles } from "lucide-react";
 import { useEffect, useRef } from "react";
 
 export default function Hero() {
@@ -14,8 +14,11 @@ export default function Hero() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    const resizeCanvas = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+    resizeCanvas();
 
     const particles: Array<{
       x: number;
@@ -23,22 +26,23 @@ export default function Hero() {
       vx: number;
       vy: number;
       radius: number;
+      opacity: number;
     }> = [];
 
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < 80; i++) {
       particles.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.5,
-        vy: (Math.random() - 0.5) * 0.5,
-        radius: Math.random() * 2 + 1,
+        vx: (Math.random() - 0.5) * 0.8,
+        vy: (Math.random() - 0.5) * 0.8,
+        radius: Math.random() * 3 + 1,
+        opacity: Math.random() * 0.5 + 0.2,
       });
     }
 
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = "rgba(10, 10, 10, 0.05)";
-
+      
       particles.forEach((particle) => {
         particle.x += particle.vx;
         particle.y += particle.vy;
@@ -48,6 +52,7 @@ export default function Hero() {
 
         ctx.beginPath();
         ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(10, 10, 10, ${particle.opacity})`;
         ctx.fill();
       });
 
@@ -55,14 +60,8 @@ export default function Hero() {
     };
 
     animate();
-
-    const handleResize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    window.addEventListener("resize", resizeCanvas);
+    return () => window.removeEventListener("resize", resizeCanvas);
   }, []);
 
   const containerVariants = {
@@ -70,19 +69,20 @@ export default function Hero() {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2,
+        staggerChildren: 0.15,
+        delayChildren: 0.2,
       },
     },
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
+    hidden: { opacity: 0, y: 50 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
         duration: 0.8,
-        ease: "easeOut",
+        ease: [0.22, 1, 0.36, 1],
       },
     },
   };
@@ -90,7 +90,7 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-gray-50 to-white"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-gray-50 via-white to-gray-100"
     >
       <canvas
         ref={canvasRef}
@@ -98,25 +98,42 @@ export default function Hero() {
         style={{ mixBlendMode: "multiply" }}
       />
       
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-50/30 via-transparent to-purple-50/30" />
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-50/40 via-transparent to-purple-50/40" />
+      
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.1),transparent_50%)]" />
 
       <motion.div
-        className="relative z-10 container mx-auto px-6 text-center"
+        className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
       >
+        <motion.div
+          variants={itemVariants}
+          className="mb-8 flex justify-center"
+        >
+          <motion.div
+            className="inline-flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full border border-gray-200 shadow-sm"
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.5, type: "spring", stiffness: 200 }}
+          >
+            <Sparkles className="text-gray-900" size={16} />
+            <span className="text-sm font-medium text-gray-700">Premium Branding Studio</span>
+          </motion.div>
+        </motion.div>
+
         <motion.h1
-          className="text-6xl md:text-8xl lg:text-9xl font-bold text-gray-900 mb-6 leading-tight"
+          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-gray-900 mb-6 sm:mb-8 leading-tight px-4"
           variants={itemVariants}
         >
           <motion.span
-            className="inline-block"
+            className="inline-block mb-2 sm:mb-4"
             animate={{
-              y: [0, -10, 0],
+              y: [0, -8, 0],
             }}
             transition={{
-              duration: 3,
+              duration: 4,
               repeat: Infinity,
               ease: "easeInOut",
             }}
@@ -125,30 +142,30 @@ export default function Hero() {
           </motion.span>
           <br />
           <motion.span
-            className="inline-block"
+            className="inline-block mb-2 sm:mb-4"
             animate={{
-              y: [0, -10, 0],
+              y: [0, -8, 0],
             }}
             transition={{
-              duration: 3,
+              duration: 4,
               repeat: Infinity,
               ease: "easeInOut",
-              delay: 0.2,
+              delay: 0.3,
             }}
           >
             Future-Proof
           </motion.span>
           <br />
           <motion.span
-            className="inline-block bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent"
+            className="inline-block bg-gradient-to-r from-gray-900 via-gray-700 to-gray-900 bg-clip-text text-transparent"
             animate={{
-              y: [0, -10, 0],
+              y: [0, -8, 0],
             }}
             transition={{
-              duration: 3,
+              duration: 4,
               repeat: Infinity,
               ease: "easeInOut",
-              delay: 0.4,
+              delay: 0.6,
             }}
           >
             Brand Identities
@@ -156,20 +173,20 @@ export default function Hero() {
         </motion.h1>
 
         <motion.p
-          className="text-xl md:text-2xl text-gray-600 mb-12 max-w-2xl mx-auto"
+          className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 mb-8 sm:mb-12 max-w-3xl mx-auto px-4 leading-relaxed"
           variants={itemVariants}
         >
           We craft exceptional brand experiences that resonate, inspire, and drive
-          lasting impact.
+          lasting impact for businesses worldwide.
         </motion.p>
 
         <motion.div
-          className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+          className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center px-4"
           variants={itemVariants}
         >
           <motion.a
             href="#contact"
-            className="group px-8 py-4 bg-gray-900 text-white rounded-full font-semibold text-lg flex items-center gap-2"
+            className="group w-full sm:w-auto px-8 py-4 bg-gray-900 text-white rounded-full font-semibold text-base sm:text-lg flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-shadow"
             whileHover={{ scale: 1.05, backgroundColor: "#1a1a1a" }}
             whileTap={{ scale: 0.95 }}
           >
@@ -181,8 +198,8 @@ export default function Hero() {
           </motion.a>
           <motion.a
             href="#work"
-            className="px-8 py-4 border-2 border-gray-900 text-gray-900 rounded-full font-semibold text-lg"
-            whileHover={{ scale: 1.05, backgroundColor: "#f9fafb" }}
+            className="w-full sm:w-auto px-8 py-4 border-2 border-gray-900 text-gray-900 rounded-full font-semibold text-base sm:text-lg hover:bg-gray-50 transition-colors"
+            whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
             View Our Work
@@ -191,15 +208,18 @@ export default function Hero() {
       </motion.div>
 
       <motion.div
-        className="absolute bottom-10 left-1/2 transform -translate-x-1/2"
-        animate={{ y: [0, 10, 0] }}
+        className="absolute bottom-8 sm:bottom-10 left-1/2 transform -translate-x-1/2 z-10"
+        animate={{ y: [0, 12, 0] }}
         transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
       >
         <div className="w-6 h-10 border-2 border-gray-400 rounded-full flex justify-center">
-          <div className="w-1 h-3 bg-gray-400 rounded-full mt-2" />
+          <motion.div
+            className="w-1.5 h-3 bg-gray-400 rounded-full mt-2"
+            animate={{ y: [0, 12, 0] }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          />
         </div>
       </motion.div>
     </section>
   );
 }
-

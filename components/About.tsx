@@ -40,58 +40,78 @@ function CountUp({ end, suffix = "", duration = 2 }: { end: number; suffix?: str
 
 export default function About() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const isInView = useInView(ref, { once: true, margin: "-50px" });
 
   return (
     <section
       id="about"
       ref={ref}
-      className="py-24 bg-white"
+      className="py-16 sm:py-20 lg:py-24 bg-white w-full"
     >
-      <div className="container mx-auto px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-20">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center mb-16 lg:mb-20">
           <motion.div
+            className="text-center lg:text-left"
             initial={{ opacity: 0, x: -50 }}
             animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 text-center lg:text-left">
               Our Philosophy
             </h2>
-            <p className="text-xl text-gray-600 mb-6 leading-relaxed">
+            <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-6 leading-relaxed text-center lg:text-left">
               We believe that exceptional branding is more than just aesthetics—it's
               about creating meaningful connections between brands and their audiences.
             </p>
-            <p className="text-lg text-gray-600 mb-6 leading-relaxed">
+            <p className="text-base sm:text-lg text-gray-600 mb-6 leading-relaxed text-center lg:text-left">
               Our approach combines strategic thinking with creative excellence,
               ensuring that every brand we craft not only looks remarkable but also
               drives measurable business results.
             </p>
-            <p className="text-lg text-gray-600 leading-relaxed">
+            <p className="text-base sm:text-lg text-gray-600 leading-relaxed text-center lg:text-left">
               We're committed to building future-proof brand identities that evolve
               with your business and stand the test of time.
             </p>
           </motion.div>
 
           <motion.div
-            className="relative"
+            className="relative flex justify-center lg:justify-end"
             initial={{ opacity: 0, x: 50 }}
             animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            <div className="aspect-square bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl flex items-center justify-center">
-              <div className="text-center">
-                <div className="w-32 h-32 bg-gray-900 rounded-full mx-auto mb-4 flex items-center justify-center">
-                  <span className="text-4xl text-white font-bold">BS</span>
-                </div>
-                <p className="text-gray-600 font-medium">Brand Studio Team</p>
+            <motion.div
+              className="aspect-square w-full max-w-md bg-gradient-to-br from-gray-100 via-gray-50 to-gray-200 rounded-2xl flex items-center justify-center shadow-xl relative overflow-hidden"
+              whileHover={{ scale: 1.02 }}
+              transition={{ type: "spring", stiffness: 300 }}
+            >
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10"
+                animate={{
+                  rotate: [0, 360],
+                }}
+                transition={{
+                  duration: 20,
+                  repeat: Infinity,
+                  ease: "linear",
+                }}
+              />
+              <div className="relative z-10 text-center">
+                <motion.div
+                  className="w-24 h-24 sm:w-32 sm:h-32 bg-gradient-to-br from-gray-900 to-gray-700 rounded-full mx-auto mb-4 flex items-center justify-center shadow-lg"
+                  whileHover={{ rotate: 360, scale: 1.1 }}
+                  transition={{ duration: 0.6 }}
+                >
+                  <span className="text-3xl sm:text-4xl text-white font-bold">BS</span>
+                </motion.div>
+                <p className="text-gray-700 font-semibold text-lg">Brand Studio Team</p>
               </div>
-            </div>
+            </motion.div>
           </motion.div>
         </div>
 
         <motion.div
-          className="grid grid-cols-2 md:grid-cols-4 gap-8"
+          className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 w-full"
           initial={{ opacity: 0, y: 50 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
           transition={{ duration: 0.6, delay: 0.4 }}
@@ -104,19 +124,23 @@ export default function About() {
                 className="text-center"
                 initial={{ opacity: 0, scale: 0.5 }}
                 animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.5 }}
-                transition={{ delay: 0.5 + index * 0.1, type: "spring" }}
+                transition={{ delay: 0.5 + index * 0.1, type: "spring", stiffness: 200 }}
               >
-                <div className="w-16 h-16 bg-gray-900 rounded-xl flex items-center justify-center mx-auto mb-4">
-                  <Icon className="text-white" size={32} />
-                </div>
-                <div className="text-4xl md:text-5xl font-bold text-gray-900 mb-2">
+                <motion.div
+                  className="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-gray-900 to-gray-700 rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg"
+                  whileHover={{ rotate: 360, scale: 1.1 }}
+                  transition={{ duration: 0.6 }}
+                >
+                  <Icon className="text-white" size={28} />
+                </motion.div>
+                <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-2">
                   {isInView ? (
                     <CountUp end={stat.value} suffix={stat.suffix} />
                   ) : (
                     `0${stat.suffix}`
                   )}
                 </div>
-                <p className="text-gray-600 font-medium">{stat.label}</p>
+                <p className="text-sm sm:text-base text-gray-600 font-medium">{stat.label}</p>
               </motion.div>
             );
           })}
@@ -125,4 +149,3 @@ export default function About() {
     </section>
   );
 }
-
