@@ -65,23 +65,23 @@ export default function Hero() {
   }, []);
 
   const containerVariants = {
-    hidden: { opacity: 0 },
+    hidden: { opacity: 1 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.2,
+        staggerChildren: 0.1,
+        delayChildren: 0.1,
       },
     },
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 50 },
+    hidden: { opacity: 1, y: 0 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.8,
+        duration: 0.5,
         ease: [0.22, 1, 0.36, 1],
       },
     },
@@ -105,7 +105,7 @@ export default function Hero() {
       <motion.div
         className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center"
         variants={containerVariants}
-        initial="hidden"
+        initial="visible"
         animate="visible"
       >
         <motion.div
@@ -114,9 +114,9 @@ export default function Hero() {
         >
           <motion.div
             className="inline-flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full border border-gray-200 shadow-sm"
-            initial={{ scale: 0 }}
+            initial={{ scale: 1 }}
             animate={{ scale: 1 }}
-            transition={{ delay: 0.5, type: "spring", stiffness: 200 }}
+            transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
           >
             <Sparkles className="text-gray-900" size={16} />
             <span className="text-sm font-medium text-gray-700">Premium Branding Studio</span>

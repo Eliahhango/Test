@@ -25,6 +25,7 @@ export default function Contact() {
     }
     alert("Thank you for your message! We'll get back to you soon.");
     setFormData({ name: "", email: "", message: "" });
+    setFocused(null);
   };
 
   return (
@@ -117,17 +118,20 @@ export default function Contact() {
               <input
                 type="text"
                 id="name"
+                name="name"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 onFocus={() => setFocused("name")}
                 onBlur={() => setFocused(null)}
                 className="w-full px-4 py-3 bg-transparent border-0 border-b-2 border-gray-300 focus:border-gray-900 outline-none transition-colors text-gray-900 text-center sm:text-left"
-                placeholder=" "
+                placeholder="Enter your name"
                 required
+                aria-label="Name"
+                aria-required="true"
               />
               <label
                 htmlFor="name"
-                className={`absolute left-4 transition-all duration-300 ${
+                className={`absolute left-4 transition-all duration-300 pointer-events-none ${
                   focused === "name" || formData.name
                     ? "top-0 text-sm text-gray-900"
                     : "top-3 text-base text-gray-500"
@@ -147,17 +151,20 @@ export default function Contact() {
               <input
                 type="email"
                 id="email"
+                name="email"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 onFocus={() => setFocused("email")}
                 onBlur={() => setFocused(null)}
                 className="w-full px-4 py-3 bg-transparent border-0 border-b-2 border-gray-300 focus:border-gray-900 outline-none transition-colors text-gray-900 text-center sm:text-left"
-                placeholder=" "
+                placeholder="Enter your email"
                 required
+                aria-label="Email"
+                aria-required="true"
               />
               <label
                 htmlFor="email"
-                className={`absolute left-4 transition-all duration-300 ${
+                className={`absolute left-4 transition-all duration-300 pointer-events-none ${
                   focused === "email" || formData.email
                     ? "top-0 text-sm text-gray-900"
                     : "top-3 text-base text-gray-500"
@@ -176,18 +183,21 @@ export default function Contact() {
             <div className="relative">
               <textarea
                 id="message"
+                name="message"
                 value={formData.message}
                 onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                 onFocus={() => setFocused("message")}
                 onBlur={() => setFocused(null)}
                 rows={6}
                 className="w-full px-4 py-3 bg-transparent border-0 border-b-2 border-gray-300 focus:border-gray-900 outline-none transition-colors resize-none text-gray-900 text-center sm:text-left"
-                placeholder=" "
+                placeholder="Enter your message"
                 required
+                aria-label="Message"
+                aria-required="true"
               />
               <label
                 htmlFor="message"
-                className={`absolute left-4 transition-all duration-300 ${
+                className={`absolute left-4 transition-all duration-300 pointer-events-none ${
                   focused === "message" || formData.message
                     ? "top-0 text-sm text-gray-900"
                     : "top-3 text-base text-gray-500"

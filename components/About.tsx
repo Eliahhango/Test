@@ -11,24 +11,47 @@ const stats = [
   { icon: TrendingUp, value: 95, suffix: "%", label: "Client Satisfaction" },
 ];
 
-function CountUp({ end, suffix = "", duration = 2 }: { end: number; suffix?: string; duration?: number }) {
+function CountUp({ end, suffix = "", duration = 2, isActive = false }: { 
+  end: number; 
+  suffix?: string; 
+  duration?: number;
+  isActive?: boolean;
+}) {
   const [count, setCount] = useState(0);
   const countRef = useRef(0);
+  const hasAnimated = useRef(false);
 
   useEffect(() => {
-    const increment = end / (duration * 60);
-    const timer = setInterval(() => {
-      countRef.current += increment;
-      if (countRef.current >= end) {
-        setCount(end);
-        clearInterval(timer);
-      } else {
-        setCount(Math.floor(countRef.current));
-      }
-    }, 1000 / 60);
+    if (isActive && !hasAnimated.current) {
+      hasAnimated.current = true;
+      const increment = end / (duration * 60);
+      const timer = setInterval(() => {
+        countRef.current += increment;
+        if (countRef.current >= end) {
+          setCount(end);
+          clearInterval(timer);
+        } else {
+          setCount(Math.floor(countRef.current));
+        }
+      }, 1000 / 60);
 
-    return () => clearInterval(timer);
-  }, [end, duration]);
+      return () => clearInterval(timer);
+    } else if (!isActive) {
+      // Show final value immediately if not active (fallback)
+      setCount(end);
+    }
+  }, [end, duration, isActive]);
+
+  // Fallback: show final value if animation hasn't started after a delay
+  useEffect(() => {
+    const fallbackTimer = setTimeout(() => {
+      if (count === 0 && end > 0) {
+        setCount(end);
+      }
+    }, 100);
+
+    return () => clearTimeout(fallbackTimer);
+  }, [count, end]);
 
   return (
     <span>
@@ -53,7 +76,7 @@ export default function About() {
           <motion.div
             className="text-center lg:text-left"
             initial={{ opacity: 0, x: -50 }}
-            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
+            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
           >
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 text-center lg:text-left">
@@ -77,7 +100,7 @@ export default function About() {
           <motion.div
             className="relative flex justify-center lg:justify-end"
             initial={{ opacity: 0, x: 50 }}
-            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
+            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
             <motion.div
@@ -113,7 +136,7 @@ export default function About() {
         <motion.div
           className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 w-full"
           initial={{ opacity: 0, y: 50 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
         >
           {stats.map((stat, index) => {
@@ -123,7 +146,7 @@ export default function About() {
                 key={stat.label}
                 className="text-center"
                 initial={{ opacity: 0, scale: 0.5 }}
-                animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.5 }}
+                animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 1, scale: 1 }}
                 transition={{ delay: 0.5 + index * 0.1, type: "spring", stiffness: 200 }}
               >
                 <motion.div
@@ -134,11 +157,7 @@ export default function About() {
                   <Icon className="text-white" size={28} />
                 </motion.div>
                 <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-2">
-                  {isInView ? (
-                    <CountUp end={stat.value} suffix={stat.suffix} />
-                  ) : (
-                    `0${stat.suffix}`
-                  )}
+                  <CountUp end={stat.value} suffix={stat.suffix} isActive={isInView} />
                 </div>
                 <p className="text-sm sm:text-base text-gray-600 font-medium">{stat.label}</p>
               </motion.div>
